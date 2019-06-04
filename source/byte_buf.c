@@ -171,7 +171,9 @@ bool aws_byte_cursor_next_split(
     const struct aws_byte_cursor *AWS_RESTRICT input_str,
     char split_on,
     struct aws_byte_cursor *AWS_RESTRICT substr) {
-
+    AWS_PRECONDITION(aws_byte_cursor_is_valid(input_str));
+    AWS_PRECONDITION(aws_byte_cursor_is_valid(substr));
+    AWS_PRECONDITION(input_str != substr);
     bool first_run = false;
     if (!substr->ptr) {
         first_run = true;
@@ -182,6 +184,8 @@ bool aws_byte_cursor_next_split(
     if (substr->ptr > input_str->ptr + input_str->len) {
         /* This will hit if the last substring returned was an empty string after terminating split_on. */
         AWS_ZERO_STRUCT(*substr);
+        AWS_POSTCONDITION(aws_byte_cursor_is_valid(input_str));
+        AWS_POSTCONDITION(aws_byte_cursor_is_valid(substr));
         return false;
     }
 
@@ -193,6 +197,8 @@ bool aws_byte_cursor_next_split(
     if (!first_run && substr->len == 0) {
         /* This will hit if the string doesn't end with split_on but we're done. */
         AWS_ZERO_STRUCT(*substr);
+        AWS_POSTCONDITION(aws_byte_cursor_is_valid(input_str));
+        AWS_POSTCONDITION(aws_byte_cursor_is_valid(substr));
         return false;
     }
 
@@ -203,6 +209,8 @@ bool aws_byte_cursor_next_split(
 
         if (substr->len == 0) {
             /* If split character was last in the string, return empty substr. */
+            AWS_POSTCONDITION(aws_byte_cursor_is_valid(input_str));
+            AWS_POSTCONDITION(aws_byte_cursor_is_valid(substr));
             return true;
         }
     }
@@ -214,6 +222,8 @@ bool aws_byte_cursor_next_split(
         substr->len = new_location - substr->ptr;
     }
 
+    AWS_POSTCONDITION(aws_byte_cursor_is_valid(input_str));
+    AWS_POSTCONDITION(aws_byte_cursor_is_valid(substr));
     return true;
 }
 
