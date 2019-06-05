@@ -180,6 +180,9 @@ bool aws_byte_cursor_next_split(
         substr->ptr = input_str->ptr;
         substr->len = 0;
     }
+    uint8_t *debug_substr_ptr_frist = substr->ptr;
+    size_t debug_inpute_str_len_first = input_str->len;
+    uint8_t *debug_input_ptr_frist = input_str->ptr + input_str->len;
 
     if (substr->ptr > input_str->ptr + input_str->len) {
         /* This will hit if the last substring returned was an empty string after terminating split_on. */
@@ -192,6 +195,8 @@ bool aws_byte_cursor_next_split(
     /* Calculate first byte to search. */
     substr->ptr += substr->len;
     /* Remaining bytes is the number we started with minus the number of bytes already read. */
+    size_t debug_substr_len = substr->len;
+    size_t debug_input_len = input_str->len;
     substr->len = input_str->len - (substr->ptr - input_str->ptr);
 
     if (!first_run && substr->len == 0) {
@@ -216,6 +221,8 @@ bool aws_byte_cursor_next_split(
     }
 
     uint8_t *new_location = memchr(substr->ptr, split_on, substr->len);
+    char debug_split_on = split_on;
+    uint8_t *debug_substr_ptr = substr->ptr;
     if (new_location) {
 
         /* Character found, update string length. */

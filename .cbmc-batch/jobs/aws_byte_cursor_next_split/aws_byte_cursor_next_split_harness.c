@@ -45,10 +45,7 @@ void aws_byte_cursor_next_split_harness() {
 
     /* operation under verification */
     if (aws_byte_cursor_next_split((nondet_bool() ? &input_str : NULL), split_on, (nondet_bool() ? &substr : NULL))) {
-        /*assert(lhs.len == rhs.len);
-        if (lhs.len > 0) {
-            assert_bytes_match(lhs.ptr, rhs.ptr, lhs.len);
-        }*/
+        /* TODO */
     }
 
     /* assertions */
