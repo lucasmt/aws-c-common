@@ -44,7 +44,7 @@ void aws_byte_cursor_next_split_harness() {
     save_byte_from_array(substr.ptr, substr.len, &old_byte_from_substr);
 
     /* operation under verification */
-    if (aws_byte_cursor_next_split((nondet_bool() ? &input_str : NULL), split_on, (nondet_bool() ? &substr : NULL))) {
+    if (aws_byte_cursor_next_split(&input_str, split_on, &substr)) {
         /* TODO */
     }
 
