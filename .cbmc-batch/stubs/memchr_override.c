@@ -21,12 +21,16 @@
 void* memchr_impl(const void *str, int n, __CPROVER_size_t len) {
     (void)n;
     __CPROVER_precondition(__CPROVER_r_ok(str, len), "memchr string readable");
-    const char* rval;
+    size_t offset;
+    __CPROVER_assume(offset < len);
+    const char* rval = nondet_bool() ? str + offset : NULL;
+    /*
     if(nondet_bool()) {
         __CPROVER_assume(rval >= str && rval < (str + len));
     } else {
         __CPROVER_assume(rval == NULL);
     }
+    */
     return rval;
 }
 
